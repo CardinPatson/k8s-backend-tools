@@ -1,0 +1,1 @@
+helm install dev-sql-data --values ".\inf.yaml" --set app.name=dev-sql-data --set "ingress.hosts=localhost" "..\dev-sql-data" 

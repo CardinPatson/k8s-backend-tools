@@ -1,0 +1,9 @@
+inf:
+  sql:                      # inf.sql defines the sql server databases & logins
+    #host:  my-sql-server   # Uncomment to specify a custom sql-server to be used. By default "sql-data-<appname>" will be used  
+    common:
+      user: sa                  # SQL user
+      pwd: pwd@12345#           # SQL pwd
+      pid: Developer
+      TrustServerCertificate: true
+    timeout: "30"
