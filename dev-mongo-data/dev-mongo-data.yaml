@@ -1,4 +1,5 @@
 ##This chart could be found at https://raw.githubusercontent.com/mongodb/mongodb-kubernetes-operator/master/config/samples/mongodb.com_v1_mongodbcommunity_cr.yaml
+## Official documentation :https://www.mongodb.com/docs/kubernetes/current/reference/k8s-operator-mongodbuser-specification/
 ---
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
@@ -23,7 +24,7 @@ spec:
           db: admin
         - name: clusterAdmin
           db: admin
-        - name: userAdminAnyDatabase
+        - name: dbAdminAnyDatabase
           db: admin
       scramCredentialsSecretName: my-scram
   additionalMongodConfig:
