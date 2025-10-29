@@ -19,6 +19,8 @@ spec:
       passwordSecretRef: # a reference to the secret that will be used to generate the user's password
         name: dev-mongo-password
       roles:
+        - name: readWriteAnyDatabase
+          db: admin
         - name: clusterAdmin
           db: admin
         - name: userAdminAnyDatabase
