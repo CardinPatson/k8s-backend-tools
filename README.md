@@ -41,3 +41,16 @@ To uninstall the release : `helm uninstall dev-sql-data`
 - Password : dev-redis-password@12345#
 
 To uninstall the release : `helm uninstall dev-redis-data`
+
+### Rabbitmq
+
+```bash
+.\dev-rabbitmq-data\run.ps1   # On windows
+.\dev-rabbitmq-data\run.sh    # On linux
+```
+- Host: Localhost
+- Port : 15672
+- User name : guest
+- Password : guest
+
+To uninstall the release : `helm uninstall dev-rabbitmq-data`

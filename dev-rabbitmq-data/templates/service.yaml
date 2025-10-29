@@ -1,0 +1,59 @@
+# Service qui permet aux autres pods d'accéder à la base de données SQL Server
+# via l'url dev-rabbitmq-data.default.svc.cluster.local:5672
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dev-rabbitmq-data.name" . }}
+  labels:
+    {{- include "dev-rabbitmq-data.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "dev-rabbitmq-data.selectorLabels" . | nindent 4 }}
+
+---
+# Service qui permet d'exposer le pod rabbitmq à l'extérieur du cluster Kubernetes
+# via une IP publique et le port 5672
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dev-rabbitmq-data.name" . }}-0
+  labels:
+    {{- include "dev-rabbitmq-data.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
+  selector:
+    {{- include "dev-rabbitmq-data.selectorLabels" . | nindent 4 }}
+  loadBalancerSourceRanges:
+  # Adresse IP que vous souhaitez autoriser à accéder au serveur rabbitmq
+  ##ex : - 0.0.0.0
+
+---
+# Service qui permet aux autres pods d'accéder à la base de données SQL Server
+# via une IP publique et le port 15672
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dev-rabbitmq-data.name" . }}-log
+  labels:
+    {{- include "dev-rabbitmq-data.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.serviceLog.type }}
+  ports:
+    - port: {{ .Values.serviceLog.port }}
+      targetPort: {{ .Values.serviceLog.port }}
+      protocol: TCP
+  selector:
+    {{- include "dev-rabbitmq-data.selectorLabels" . | nindent 4 }}
+  loadBalancerSourceRanges:
+  # Adresse IP que vous souhaitez autoriser à accéder au serveur rabbitmq
+  ##ex : - 0.0.0.0
