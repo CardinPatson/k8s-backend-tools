@@ -1,0 +1,56 @@
+##This chart could be found at https://raw.githubusercontent.com/mongodb/mongodb-kubernetes-operator/master/config/samples/mongodb.com_v1_mongodbcommunity_cr.yaml
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: dev-mongo-data
+  labels:
+    app: dev-mongo-data
+spec:
+  members: 1
+  type: ReplicaSet
+  version: "6.0.5"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: dev-mongo-user
+      db: admin
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: dev-mongo-password
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: my-scram
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+
+# the user credentials will be generated from this secret
+# once the credentials are generated, this secret is no longer required
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dev-mongo-password
+type: Opaque
+stringData:
+  password: dev-mongo-password@12345#
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-mongo-data-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: dev-mongo-data-svc
+  ports:
+    - port: 27017
+      targetPort: 27017
+
+##si lors du describe :
+## Endpoints: <vide> => Kubernetes ne trouve aucun pod correspondant au selector

@@ -2,11 +2,13 @@
 
 NB: DO NOT USE THIS CONFIGURATION IN PRODUCTION
 
+Before installing a chart you need a valid cluster and helm installed on your computer
+
 ### Postgres
 
 ```bash
 .\dev-pg-data\run.ps1   # On windows
-.\dev-pg-data\run.sh    # On linux
+./dev-pg-data/run.sh    # On linux
 ```
 - Host: Localhost
 - Port : 5432
@@ -20,7 +22,7 @@ To uninstall the release : `helm uninstall dev-pg-data`
 
 ```bash
 .\dev-sql-data\run.ps1   # On windows
-.\dev-sql-data\run.sh    # On linux
+./dev-sql-data/run.sh    # On linux
 ```
 - Server : localhost
 - Port : 1433
@@ -29,11 +31,31 @@ To uninstall the release : `helm uninstall dev-pg-data`
 
 To uninstall the release : `helm uninstall dev-sql-data`
 
+
+### Mongo DB
+
+```bash
+.\dev-mongo-data\run.ps1   # On windows
+./dev-mongo-data/run.sh    # On linux
+```
+- Server : localhost
+- Port : 1433
+- User name : dev-mongo-user
+- Password : dev-mongo-password@12345#
+
+To uninstall and clean the release : 
+```bash
+helm uninstall community-operator
+helm uninstall dev-mongo-data-operator
+kubectl delete crd mongodbcommunity.mongodbcommunity.mongodb.com
+kubectl delete -f ./dev-mongo-data/dev-mongo-data.yaml
+```
+
 ### Redis
 
 ```bash
 .\dev-redis-data\run.ps1   # On windows
-.\dev-redis-data\run.sh    # On linux
+./dev-redis-data/run.sh    # On linux
 ```
 - Host: Localhost
 - Port : 6379
@@ -46,7 +68,7 @@ To uninstall the release : `helm uninstall dev-redis-data`
 
 ```bash
 .\dev-rabbitmq-data\run.ps1   # On windows
-.\dev-rabbitmq-data\run.sh    # On linux
+./dev-rabbitmq-data/run.sh    # On linux
 ```
 - Host: Localhost
 - Port : 15672
