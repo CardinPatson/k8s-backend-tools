@@ -76,3 +76,20 @@ To uninstall the release : `helm uninstall dev-redis-data`
 - Password : guest
 
 To uninstall the release : `helm uninstall dev-rabbitmq-data`
+
+### Traefik
+
+```bash
+.\dev-traefik-data\run.ps1   # On windows
+./dev-traefik-data/run.sh    # On linux
+```
+
+NB : The dashboard is accessible on `http://localhost:9000/dashboard`
+
+You need to make redirection on ports 9000
+
+```bash
+kubectl port-forward svc/traefik -n traefik 9000:9000
+```
+
+To uninstall the release : `helm uninstall dev-traefik-data`

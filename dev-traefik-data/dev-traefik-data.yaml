@@ -1,0 +1,83 @@
+ports:
+  web:
+    port: 80
+    expose: 
+      default: true
+    exposedPort: 80
+    protocol: TCP
+  websecure:
+    port: 443
+    expose: 
+      default: true
+    exposedPort: 443
+    protocol: TCP
+  traefik:
+    port: 9000
+    expose: 
+      default: true
+    exposedPort: 9000
+    protocol: TCP
+
+
+service:
+  type: LoadBalancer  # 🔥 pour l’exposer à l’extérieur (NodePort possible aussi)
+  annotations: {}
+  spec: {}
+
+ingressRoute:
+  dashboard:
+    enabled: true  # Permet d’accéder au dashboard Traefik
+
+providers:
+  kubernetesCRD:
+    enabled: true  # Active les CRD (IngressRoute, Middleware…)
+  kubernetesIngress:
+    enabled: true
+
+# Active les logs utiles
+logs:
+  general:
+    level: INFO
+  access:
+    enabled: true
+
+# Optionnel : activation du dashboard sécurisé
+additionalArguments:
+  - "--api.dashboard=true"
+  - "--api.insecure=true" # ⚠️ à désactiver en prod
+
+---
+# Example d'exposition de service HTTP via Traefik IngressRoute
+
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: http-microservice-api-route
+#   namespace: default
+# spec:
+#   entryPoints:
+#     - web
+#   routes:
+#     - match: Host(`localhost`) && PathPrefix(`/api/v1/microservice`)
+#       kind: Rule
+#       services:
+#         - name: microservice-api
+#           port: 80
+---
+# Example d'exposition de service gRPC via Traefik IngressRoute
+
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: grpc-microservice-api-route
+#   namespace: default
+# spec:
+#   entryPoints:
+#     - web
+#   routes:
+#     - match: Host(`localhost`) && PathPrefix(`/api/v1/microservice-grpc`)
+#       kind: Rule
+#       services:
+#         - name: grpc-microservice-api
+#           port: 50051
+#           scheme: h2c
