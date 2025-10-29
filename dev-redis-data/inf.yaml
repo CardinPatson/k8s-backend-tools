@@ -1,0 +1,9 @@
+## To use in other pods or applications to connect to this Redis instance
+## This use redis sentinel configuration
+inf:
+  redis:
+    host: dev-redis-data-redis-node-0.dev-redis-data-redis-headless
+    replicaHost:
+      - dev-redis-data-redis-node-0.dev-redis-data-redis-headless
+    port: 6379
+    pwd: dev-redis-password@12345#
